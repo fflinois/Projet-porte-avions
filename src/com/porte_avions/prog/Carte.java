@@ -23,6 +23,70 @@ public class Carte {
 
 	}
 	
+	public void selectionCase(final Vehicule v) {
+		final int typeOfCase = tableauCases[v.getPosX()][v.getPosY()].getType();
+		int typeOfNewCase = 0;
+
+		switch (typeOfCase) {
+		case 3:
+			typeOfNewCase = 30;
+			break;
+		case 4:
+			typeOfNewCase = 40;
+			break;
+		case 5:
+			typeOfNewCase = 50;
+			break;
+		case 6:
+			typeOfNewCase = 60;
+			break;
+		case 7:
+			typeOfNewCase = 70;
+			break;
+		case 8:
+			typeOfNewCase = 80;
+			break;
+		case 9:
+			typeOfNewCase = 90;
+			break;
+		default:
+			break;
+		}
+		tableauCases[v.getPosX()][v.getPosY()].setType(typeOfNewCase);
+	}
+
+	public void deselectionCase(final Vehicule v) {
+		final int typeOfCase = tableauCases[v.getPosX()][v.getPosY()].getType();
+		int typeOfNewCase = 0;
+
+		switch (typeOfCase) {
+		case 30:
+			typeOfNewCase = 3;
+			break;
+		case 40:
+			typeOfNewCase = 4;
+			break;
+		case 50:
+			typeOfNewCase = 5;
+			break;
+		case 60:
+			typeOfNewCase = 6;
+			break;
+		case 70:
+			typeOfNewCase = 7;
+			break;
+		case 80:
+			typeOfNewCase = 8;
+			break;
+		case 90:
+			typeOfNewCase = 9;
+			break;
+		default:
+			break;
+		}
+		tableauCases[v.getPosX()][v.getPosY()].setType(typeOfNewCase);
+	}
+
 	public void miseAJour(final int newPosX, final int newPosY, final Vehicule v) {
 
 		int typeOfNewCase = tableauCases[newPosX][newPosY].getType();

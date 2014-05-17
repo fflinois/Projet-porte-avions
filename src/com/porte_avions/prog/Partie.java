@@ -42,6 +42,9 @@ public class Partie {
 
 			System.out.println("Tour " + compteurTour + " :");
 			System.out.println(listeVehiculesA.get(compteurJeu));
+			carte.selectionCase(listeVehiculesA.get(compteurJeu));
+			igpa.definirTerrain(carte.getTableauCasesInt());
+			igpa.reafficher();
 			if (listeVehiculesA.get(compteurJeu).getTypeOf() == 0) {
 				final PorteAvions PA = (PorteAvions) listeVehiculesA
 						.get(compteurJeu);
@@ -50,6 +53,7 @@ public class Partie {
 					encore = false;
 				} else if (choix == 1) {
 					choixPositionAuClic();
+					carte.deselectionCase(PA);
 					if (PA.seDeplacer(carte, positionXClic, positionYClic)) {
 						igpa.definirTerrain(carte.getTableauCasesInt());
 						igpa.reafficher();
@@ -58,6 +62,7 @@ public class Partie {
 					choixPositionAuClic();
 					final Chasseur CHA = (Chasseur) PA.listeAvions
 							.get(PA.listeAvions.size() - 1);
+					carte.deselectionCase(PA);
 					if (PA.listeAvions.get(PA.listeAvions.size() - 1).decoler(
 							carte, positionXClic, positionYClic)) {
 						ajouterVehicule(CHA);
@@ -73,12 +78,14 @@ public class Partie {
 					encore = false;
 				} else if (choix == 1) {
 					choixPositionAuClic();
+					carte.deselectionCase(CHA);
 					if (CHA.seDeplacer(carte, positionXClic, positionYClic)) {
 						igpa.definirTerrain(carte.getTableauCasesInt());
 						igpa.reafficher();
 					}
 				} else if (choix == 2) {
 					choixPositionAuClic();
+					carte.deselectionCase(CHA);
 					if (CHA.atterrir(carte, positionXClic, positionYClic)) {
 						igpa.definirTerrain(carte.getTableauCasesInt());
 						igpa.reafficher();
@@ -134,6 +141,13 @@ public class Partie {
 		igpa.declarerImage(7, "porte-avion-avions-eau.png");
 		igpa.declarerImage(8, "avion-terre.png");
 		igpa.declarerImage(9, "avions-terre.png");
+		igpa.declarerImage(30, "porte-avion-eau-sel.png");
+		igpa.declarerImage(40, "avion-eau-sel.png");
+		igpa.declarerImage(50, "avions-eau-sel.png");
+		igpa.declarerImage(60, "porte-avion-avion-eau-sel.png");
+		igpa.declarerImage(70, "porte-avion-avions-eau-sel.png");
+		igpa.declarerImage(80, "avion-terre-sel.png");
+		igpa.declarerImage(90, "avions-terre-sel.png");
 	}
 
 	/*
