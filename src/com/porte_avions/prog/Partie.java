@@ -4,6 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import com.porte_avions.enumeration.typeDeCase;
 import com.porte_avions.view.IGPA;
 
 public class Partie {
@@ -27,11 +28,13 @@ public class Partie {
 	public void jouer() {
 
 		boolean encore = true;
-		final int newX;
-		final int newY;
 		int choix = 0;
 		int compteurJeu = 0;
 		int compteurTour = 1;
+
+		if (typeDeCase.EAU.equals("EAU")) {
+			System.out.println("eua");
+		}
 
 		igpa.definirTerrain(carte.getTableauCasesInt());
 		igpa.creerFenetre();
@@ -87,13 +90,14 @@ public class Partie {
 					choixPositionAuClic();
 					carte.deselectionCase(CHA);
 					if (CHA.atterrir(carte, positionXClic, positionYClic)) {
+						supprVehicule(CHA);
 						igpa.definirTerrain(carte.getTableauCasesInt());
 						igpa.reafficher();
 					}
 				}
 			}
 
-			if (compteurJeu == listeVehiculesA.size() - 1) {
+			if (compteurJeu >= listeVehiculesA.size() - 1) {
 				compteurJeu = 0;
 			} else {
 				compteurJeu++;
@@ -219,6 +223,15 @@ public class Partie {
 		return vehiculeAjoute;
 	}
 
+	public boolean supprVehicule(final Vehicule v) {
+		final boolean vehiculeSupprime = true;
+
+		listeVehiculesA.remove(v);
+
+
+		return vehiculeSupprime;
+	}
+
 
 	public int menuPorteAvions(final PorteAvions PA) {
 		int choix = 0;
@@ -311,6 +324,7 @@ public class Partie {
 
 	public void setPositionXClic(final int positionXClic) {
 		final int tempX = (positionXClic - 24) / 48;
+		System.out.println("x " + tempX);
 		this.positionXClic = tempX;
 	}
 
@@ -320,6 +334,7 @@ public class Partie {
 
 	public void setPositionYClic(final int positionYClic) {
 		final int tempY = (positionYClic - 24) / 48;
+		System.out.println("y " + tempY);
 		this.positionYClic = tempY;
 	}
 

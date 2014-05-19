@@ -23,8 +23,15 @@ public class PorteAvions extends Navire {
 	}
 
 	@Override
+	public boolean seDeplacer(final Carte carteJeu, final int newPosX,
+			final int newPosY) {
+		final boolean deplace = false;
+		super.seDeplacer(carteJeu, newPosX, newPosY);
+		modifPositionAvionABord(newPosX, newPosY);
+		return deplace;
+	}
 
-
+	@Override
 	public String toString(){
 		String temp = super.toString();
 		temp += "\navec " + nbrAvionsABord + " avion(s) à bord";
@@ -39,6 +46,14 @@ public class PorteAvions extends Navire {
 		return nbrAvionsABord;
 	}
 
+	public boolean modifPositionAvionABord(final int newPosX,final int newPosY){
+		for (final Avion avion : listeAvions) {
+			avion.setPosX(newPosX);
+			avion.setPosY(newPosY);
+		}
+		return true;
+	}
+
 	public boolean addAvion(final Avion avion) {
 		listeAvions.add(avion);
 		nbrAvionsABord += 1;
@@ -50,7 +65,4 @@ public class PorteAvions extends Navire {
 		nbrAvionsABord -= 1;
 		return true;
 	}
-
-
-
 }

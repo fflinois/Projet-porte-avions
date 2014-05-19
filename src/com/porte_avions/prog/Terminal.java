@@ -1,5 +1,7 @@
 package com.porte_avions.prog;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Terminal {
 
@@ -10,7 +12,7 @@ public class Terminal {
 
         try {
             tmp = in.readLine();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             exceptionHandler(e);
         }
         return tmp;
@@ -21,7 +23,7 @@ public class Terminal {
 
         try {
             x = Integer.parseInt(readString());
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             exceptionHandler(e);
         }
 
@@ -33,7 +35,7 @@ public class Terminal {
 
         try {
             b = Boolean.valueOf(readString()).booleanValue();
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             exceptionHandler(e);
         }
 
@@ -45,7 +47,7 @@ public class Terminal {
 
         try {
             x = Double.valueOf(readString()).doubleValue();
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             exceptionHandler(e);
         }
 
@@ -53,7 +55,7 @@ public class Terminal {
     }
 
     public static char readChar() {
-        String tmp = readString();
+        final String tmp = readString();
 
         if (tmp.length() == 0)
             return '\n';
@@ -62,51 +64,51 @@ public class Terminal {
         }
     }
 
-    public static void writeString(String s) {
+    public static void writeString(final String s) {
         try {
             System.out.print(s);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             exceptionHandler(ex);
         }
     }
 
-    public static void writeStringln(String s) {
+    public static void writeStringln(final String s) {
         writeString(s);
         lineBreak();
     }
 
-    public static void writeInt(int i) {
+    public static void writeInt(final int i) {
         writeString("" + i);
     }
 
-    public static void writeIntln(int i) {
+    public static void writeIntln(final int i) {
         writeString("" + i);
         lineBreak();
     }
 
-    public static void writeBoolean(boolean b) {
+    public static void writeBoolean(final boolean b) {
         writeString("" + b);
     }
 
-    public static void writeBooleanln(boolean b) {
+    public static void writeBooleanln(final boolean b) {
         writeString("" + b);
         lineBreak();
     }
 
-    public static void writeDouble(double d) {
+    public static void writeDouble(final double d) {
         writeString("" + d);
     }
 
-    public static void writeDoubleln(double d) {
+    public static void writeDoubleln(final double d) {
         writeDouble(d);
         lineBreak();
     }
 
-    public static void writeChar(char c) {
+    public static void writeChar(final char c) {
         writeString("" + c);
     }
 
-    public static void writeCharln(char c) {
+    public static void writeCharln(final char c) {
         writeChar(c);
         lineBreak();
     }
@@ -114,26 +116,30 @@ public class Terminal {
     public static void lineBreak() {
         try {
             System.out.println();
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             exceptionHandler(ex);
         }
     }
 
-    protected static void exceptionHandler(Exception ex) {
-        TerminalException err = new TerminalException(ex);
+    protected static void exceptionHandler(final Exception ex) {
+        final TerminalException err = new TerminalException(ex);
         throw err;
     }
 
-    public static void writeException(Throwable ex) {
+    public static void writeException(final Throwable ex) {
         writeString(ex.toString());
         ex.printStackTrace(System.err);
     }
 }
 
 class TerminalException extends RuntimeException {
-    Exception ex;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	Exception ex;
 
-    TerminalException(Exception e) {
+    TerminalException(final Exception e) {
         ex = e;
     }
 }

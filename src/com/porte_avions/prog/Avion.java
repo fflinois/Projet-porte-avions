@@ -15,17 +15,16 @@ public abstract class Avion extends Vehicule{
 	@Override
 	public boolean isDeplacable(final Carte carteJeu, final int newPosX,
 			final int newPosY) {
-		int nbrAvionCase;
-		boolean isDeplacable = false;
+		int nbrAvionCase = 5;
 		if (super.isDeplacable(carteJeu, newPosX, newPosY)) {
 			nbrAvionCase = carteJeu.getTableauCases()[newPosX][newPosY]
 					.getNbrAvion();
-
-			if (nbrAvionCase < 5) {
-				isDeplacable = true;
-			}
 		}
-		return isDeplacable;
+		return nbrAvionCase < 5;
+	}
+
+	public boolean zoneEnvolLibre(final Carte carteJeu) {
+		return carteJeu.getTableauCases()[posX][posY].getNbrAvion() < 5;
 	}
 
 	public boolean decoler(final Carte carteJeu, final int newPosX,
@@ -35,10 +34,7 @@ public abstract class Avion extends Vehicule{
 				.getPorteAvions();
 
 		if (isDeplacable(carteJeu, newPosX, newPosY)
-				&& carteJeu.getTableauCases()[posX][posY]
-.getNbrAvion() < 5
-				&& carteJeu.getTableauCases()[newPosX][newPosY].getNbrAvion() < 5) {
-
+				&& zoneEnvolLibre(carteJeu)) {
 			position = 1;
 			carteJeu.miseAJour(newPosX, newPosY, this);
 			brulerCarburant(newPosX, newPosY);

@@ -11,17 +11,4 @@ public class Chasseur extends Avion {
 				posYChasseur, typeOfChasseur);
 	}
 
-	@Override
-	boolean atterrir() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	boolean decoler() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
 }

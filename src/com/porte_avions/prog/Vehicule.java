@@ -30,31 +30,30 @@ public abstract class Vehicule {
 		typeOf = typeOfVehicule;
 	}
 
-
 	public boolean isPlacable(final Carte carteJeu, final int PosX,
 			final int PosY) {
-		boolean isPlacable = false;
-
-		if (carteJeu.getTableauCasesInt()[posX][posY] != 1
-				&& carteJeu.getTableauCasesInt()[posX][posY] != 3) {
-			isPlacable = true;
-		}
-		return isPlacable;
+		return carteJeu.getTableauCasesInt()[posX][posY] != 1
+				&& carteJeu.getTableauCasesInt()[posX][posY] != 3;
 	}
 
 	public boolean isDeplacable(final Carte carteJeu, final int newPosX,
 			final int newPosY) {
-		boolean isDeplacable = false;
-		if (newPosX <= carteJeu.getLargeur() - 1 && newPosX >= 0
-				&& newPosY <= carteJeu.getHauteur() - 1 && newPosY >= 0
-				&& newPosX <= posX + distDeplaceMaxi
+		return isDansRayonAction(newPosX, newPosY)
+				&& aAssezDeCarburant(newPosX, newPosY)
+				&& isDansCarte(carteJeu, newPosX, newPosY);
+	}
+
+	private boolean isDansCarte(final Carte carteJeu, final int newPosX,
+			final int newPosY) {
+		return newPosX <= carteJeu.getLargeur() - 1 && newPosX >= 0
+				&& newPosY <= carteJeu.getHauteur() - 1 && newPosY >= 0;
+	}
+
+	private boolean isDansRayonAction(final int newPosX, final int newPosY) {
+		return newPosX <= posX + distDeplaceMaxi
 				&& newPosX >= posX - distDeplaceMaxi
 				&& newPosY <= posY + distDeplaceMaxi
-				&& newPosY > posY - distDeplaceMaxi
-				&& aAssezDeCarburant(newPosX, newPosY)) {
-			isDeplacable = true;
-		}
-		return isDeplacable;
+				&& newPosY >= posY - distDeplaceMaxi;
 	}
 
 	public boolean seDeplacer(final Carte carteJeu, final int newPosX,
