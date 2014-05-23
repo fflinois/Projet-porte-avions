@@ -62,7 +62,8 @@ public abstract class Avion extends Vehicule{
 				&& placeDispoSurCase(carteJeu, newPosX, newPosY)
 				&& (typeCase == 1 || ((typeCase == 3 || typeCase == 6 || typeCase == 7)
 						&& porteAvionsCase.getNbrAvionsABord() < porteAvionsCase
-								.getCapaciteMax() && isUnAmi(porteAvionsCase)))) {
+								.getCapaciteMax() && porteAvionsCase
+							.isUnAmi(this)))) {
 			position = 2;
 			carteJeu.miseAJour(newPosX, newPosY, this);
 			brulerCarburant(newPosX, newPosY);
@@ -78,10 +79,6 @@ public abstract class Avion extends Vehicule{
 	public boolean placeDispoSurCase(final Carte carteJeu, final int newPosX,
 			final int newPosY) {
 		return carteJeu.getTableauCases()[newPosX][newPosY].getNbrAvion() < 5;
-	}
-
-	public boolean isUnAmi(final PorteAvions porteAvions) {
-		return porteAvions.getNationalite().equals(nationalite);
 	}
 
 }

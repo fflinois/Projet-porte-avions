@@ -29,6 +29,10 @@ public class Case {
 		return nbrAvion;
 	}
 
+	public int getNbrVehicule() {
+		return listeVehicule.size();
+	}
+
 	public PorteAvions getPorteAvions() {
 		PorteAvions porteAvions = null;
 		for (final Vehicule v : listeVehicule) {
@@ -37,6 +41,14 @@ public class Case {
 			}
 		}
 		return porteAvions;
+	}
+
+	public Vehicule[] getVehicule() {
+		final Vehicule[] listeVehicules = new Vehicule[listeVehicule.size()];
+		for (int i = 0; i < listeVehicule.size(); i++) {
+			listeVehicules[i] = listeVehicule.get(i);
+		}
+		return listeVehicules;
 	}
 
 	public void ajouterVehicule(final Vehicule v) {

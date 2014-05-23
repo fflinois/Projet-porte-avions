@@ -17,10 +17,13 @@ public class Partie {
 	protected int positionYClic;
 	protected int posX;
 	protected int posY;
+	protected int nbrCase;
+	protected int nbrIcone;
 
 	public Partie() {
 		carte = new Carte(initCarte(10, 10));
 		tabMenu = new int[5];
+		nbrCase = carte.getLargeur();
 		tabMenuInit = new int[5];
 		for (int i = 0; i < tabMenuInit.length; i++) {
 			tabMenuInit[i] = 105;
@@ -79,6 +82,8 @@ public class Partie {
 		igpa.declarerImage(104, "atterrir.png");
 		igpa.declarerImage(105, "noir.png");
 		igpa.declarerImage(106, "exit.png");
+		igpa.declarerImage(107, "rafaleAttaque.png");
+		igpa.declarerImage(108, "missilePA.png");
 	}
 
 	/*
@@ -88,6 +93,8 @@ public class Partie {
 		int choix = 0;
 		String tempText;
 		String nom;
+		String nationalite;
+		final String[] textInfo = new String[2];
 		boolean isPlacable;
 
 		choix = saisieEntier(1, 10, "Nombre de porte-avions ?");
@@ -95,20 +102,27 @@ public class Partie {
 		for (int i = 0; i < choix; i++) {
 			System.out.println("Nom du porte-avions" + (i + 1));
 			nom = Terminal.readString();
-			PorteAvions PA;
+			System.out.println("Nationalité du porte-avions" + (i + 1));
+			nationalite = Terminal.readString();
+			PorteAvions porteAvions;
 			do {
 				System.out.println("Position du porte-avions " + nom);
-				recuperationCoordSourisSurCarte(34, 548, 54, 534);
-				PA = new PorteAvions("Francais", nom, 100, 100, 1, 1,
+				recuperationCoordSourisSurCarte(Coord.xCarteMin(nbrCase),
+						Coord.xCarteMax(nbrCase), Coord.yCarteMin(nbrCase),
+						Coord.yCarteMax(nbrCase));
+				porteAvions = new PorteAvions(nationalite, nom, 100, 100, 1, 1,
 						positionXClic, positionYClic, 10, 0);
-				isPlacable = PA.isPlacable(carte, positionXClic, positionYClic);
+				isPlacable = porteAvions.isPlacable(carte, positionXClic,
+						positionYClic);
 				if (!isPlacable) {
-					System.out.println("Cet emplacement est impossible");
+					textInfo[0] = "Cet emplacement est impossible";
+					igpa.setTextAAfficher(textInfo);
 				}
 			} while (!isPlacable);
 
-			ajouterVehicule(PA);
-			carte.init(positionXClic, positionYClic, PA);
+			ajouterVehicule(porteAvions);
+			carte.init(positionXClic, positionYClic, porteAvions);
+			rafraichirIGPA();
 		}
 
 		for (final Vehicule v : listeVehiculesA) {
@@ -119,12 +133,12 @@ public class Partie {
 				choix = saisieEntier(1, 2, tempText);
 
 				if (choix == 1) {
-					System.out.println("Combien d'avion?");
-					choix = Terminal.readInt();
+					choix = saisieEntier(1, 10, "Combien d'avion?");
 					for (int i = 0; i < choix; i++) {
 						System.out.println("Nom de l'avions" + (i + 1));
 						nom = Terminal.readString();
-						final Avion chasseur = new Chasseur("Francais", nom,
+						final Avion chasseur = new Chasseur(v.getNationalite(),
+								nom,
 								100, 100, 8, 1, PA.getPosX(), PA.getPosY(), 1);
 						chasseur.setPosition(2);
 						PA.addAvion(chasseur);
@@ -156,8 +170,7 @@ public class Partie {
 		int choix = 0;
 		int compteurJeu = 0;
 		int compteurTour = 1;
-		int nbrIcone;
-		final int nbrCase = carte.getLargeur();
+
 		final String[] infoPourClic = { "Sélectionner une case",
 				"en cliquant sur", "celle-ci" };
 
@@ -169,14 +182,14 @@ public class Partie {
 
 		while (encore) {
 
-			// System.out.println("Tour " + compteurTour + " :");
-			// System.out.println(listeVehiculesA.get(compteurJeu));
-			igpa.setTextAAfficher(listeVehiculesA.get(compteurJeu).toString()
+			final Vehicule vehiculeJouant = listeVehiculesA.get(compteurJeu);
+
+			igpa.setTextAAfficher(vehiculeJouant.toString()
 					.split("\n"));
-			carte.selectionCase(listeVehiculesA.get(compteurJeu));
+			carte.selectionCase(vehiculeJouant);
 			rafraichirIGPA();
 
-			nbrIcone = affichageMenu(listeVehiculesA.get(compteurJeu));
+			nbrIcone = affichageMenu(vehiculeJouant);
 			igpa.definirMenu(tabMenu);
 			rafraichirIGPA();
 			choix = recuperationCoordSourisSurMenu(Coord.xMenuMin(nbrCase),
@@ -194,21 +207,29 @@ public class Partie {
 				recuperationCoordSourisSurCarte(Coord.xCarteMin(nbrCase),
 						Coord.xCarteMax(nbrCase), Coord.yCarteMin(nbrCase),
 						Coord.yCarteMax(nbrCase));
-				carte.deselectionCase(listeVehiculesA.get(compteurJeu));
+				carte.deselectionCase(vehiculeJouant);
 				if (choix == 1) {	
 					
-					deplacerVehicule(listeVehiculesA.get(compteurJeu));
+					deplacerVehicule(vehiculeJouant);
 				
 				} else if (choix == 2) {
-					if (isPorteAvions(listeVehiculesA.get(compteurJeu))) {
+					if (isPorteAvionsQuiAttaque(vehiculeJouant)) {
+						vehiculeJouant.attaquer(carte, positionXClic,
+								positionYClic);
+					} else if (isPorteAvions(vehiculeJouant)) {
 						faireDecolerAvion((PorteAvions) listeVehiculesA
 								.get(compteurJeu));
 					} else {
 						faireAtterrirAvion((Avion) listeVehiculesA
 								.get(compteurJeu));
 					}
+				} else if (choix == 3) {
+					vehiculeJouant
+							.attaquer(carte,
+							positionXClic, positionYClic);
 				}
 			}
+
 			rafraichirIGPA();
 			
 			if (compteurJeu >= listeVehiculesA.size() - 1) {
@@ -234,9 +255,10 @@ public class Partie {
 	}
 
 	public void faireDecolerAvion(final PorteAvions porteAvions){
+		final Avion avion = selectionChasseurDansPorteAvions(porteAvions);
 		if (porteAvions.listeAvions.get(porteAvions.listeAvions.size() - 1)
 				.decoler(carte, positionXClic, positionYClic)) {
-			ajouterVehicule(selectionChasseurDansPorteAvions(porteAvions));
+			ajouterVehicule(avion);
 		}		
 	}
 	
@@ -254,6 +276,15 @@ public class Partie {
 		}
 	}
 
+	public void verifEtatVehicule(){
+		for (final Vehicule vehicule : listeVehiculesA) {
+			if (vehicule.getEtat() == 0) {
+				listeVehiculesA.remove(vehicule);
+
+			}
+		}
+	}
+
 	public void rafraichirIGPA() {
 		igpa.definirTerrain(carte.getTableauCasesInt());
 		igpa.reafficher();
@@ -261,6 +292,10 @@ public class Partie {
 
 	public boolean isPorteAvions(final Vehicule vehicule) {
 		return vehicule.getTypeOf() == 0;
+	}
+
+	public boolean isPorteAvionsQuiAttaque(final Vehicule vehicule) {
+		return isPorteAvions(vehicule) && nbrIcone == 3;
 	}
 
 	public boolean avionABord(final PorteAvions porteAvions) {
@@ -314,39 +349,25 @@ public class Partie {
 
 	public int affichageMenu(final Vehicule vehicule) {
 		int nbrIcone = 0;
-		final int[] tabMenuPorteAvions = { 106, 101, 105, 105, 105 };
-		final int[] tabMenuPorteAvionsAvecAvions = { 106, 101, 103, 105, 105 };
-		final int[] tabMenuAvion = { 106, 102, 104, 105, 105 };
+		final int[] tabMenuPorteAvions = { 106, 101, 108, 105, 105 };
+		final int[] tabMenuPorteAvionsAvecAvions = { 106, 101, 103, 108, 105 };
+		final int[] tabMenuAvion = { 106, 102, 104, 107, 105 };
 
 		if (vehicule.getTypeOf() == 0) {
 			if (avionABord((PorteAvions) vehicule)) {
 				tabMenu = tabMenuPorteAvionsAvecAvions;
-				nbrIcone = 3;
+				nbrIcone = 4;
 			} else {
 				tabMenu = tabMenuPorteAvions;
-				nbrIcone = 2;
+				nbrIcone = 3;
 			}
 		} else if (vehicule.getTypeOf() == 1) {
 			tabMenu = tabMenuAvion;
-			nbrIcone = 2;
+			nbrIcone = 3;
 		}
 		return nbrIcone;
 	}
 
-	private int menu(final String text, final int[] tabChoix) {
-		int choix = -1;
-		boolean bonChoix = false;
-		while (!bonChoix) {
-			System.out.println(text);
-			choix = Terminal.readInt();
-			for (final int i : tabChoix) {
-				if (choix == i) {
-					bonChoix = true;
-				}
-			}
-		}
-		return choix;
-	}
 	/**
 	 * 
 	 * @param xMin : coordonnée mini en X de la zone cliquable
@@ -416,7 +437,6 @@ public class Partie {
 		this.positionYClic = tempY;
 		return tempY;
 	}
-
 
 	public boolean isHorsZone(final int xMin, final int xMax, final int yMin,
 			final int yMax) {

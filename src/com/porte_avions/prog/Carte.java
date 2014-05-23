@@ -211,6 +211,11 @@ public class Carte {
 		}
 	}
 
+	public void suppression(final int newPosX, final int newPosY,
+			final Vehicule v) {
+
+	}
+
 	public int getLargeur() {
 		return largeur;
 	}

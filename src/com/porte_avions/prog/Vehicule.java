@@ -28,6 +28,7 @@ public abstract class Vehicule {
 		posX = posXVehicule;
 		posY = posYVehicule;
 		typeOf = typeOfVehicule;
+		etat = 5;
 	}
 
 	public boolean isPlacable(final Carte carteJeu, final int PosX,
@@ -71,6 +72,22 @@ public abstract class Vehicule {
 		return deplace;
 	}
 
+	public boolean attaquer(final Carte carteJeu, final int posX, final int posY) {
+		boolean attaque = false;
+		final int nbrVehiculeSurCase = carteJeu.getTableauCases()[posX][posY]
+				.getNbrVehicule();
+		final Vehicule[] listeVehicules = carteJeu.getTableauCases()[posX][posY]
+				.getVehicule();
+		for (int i = 0; i < nbrVehiculeSurCase; i++) {
+			if (!isUnAmi(listeVehicules[i])) {
+				System.out.println("ATTAQUE");
+				attaque = true;
+				listeVehicules[i].PerdrePointDeVie();
+			}
+		}
+		return attaque;
+	}
+
 	public boolean aAssezDeCarburant(final int newPosX, final int newPosY) {
 		boolean aAssez = false;
 		if (niveauCarburant
@@ -91,6 +108,10 @@ public abstract class Vehicule {
 		}
 	}
 
+	public void PerdrePointDeVie() {
+		etat--;
+	}
+
 	@Override
 	public String toString() {
 		String temp = "";
@@ -105,14 +126,46 @@ public abstract class Vehicule {
 		temp += "\n" + nationalite + ", " + nom + "\nà " + niveauCarburant
 				+ " unité(s) de carburant\nil est ";
 
-		if (position == 0) {
-			temp += "en mer";
-		} else if (position == 1) {
-			temp += "en vol";
-		} else if (position == 2) {
-			temp += "sur le porte-avions";
-		}
+		temp += positionVehicule();
+		temp += etatVehicule();
 
+		return temp;
+	}
+
+	public String positionVehicule() {
+		String temp = "";
+		if (position == 0) {
+			temp = "en mer";
+		} else if (position == 1) {
+			temp = "en vol";
+		} else if (position == 2) {
+			temp = "sur le porte-avions";
+		}
+		return temp + "\n";
+	}
+
+	public String etatVehicule() {
+		String temp = "";
+		switch (etat) {
+		case 0:
+			temp = "Détruit";
+			break;
+		case 1:
+			temp = "Presque détruit";
+			break;
+		case 2:
+			temp = "Très endommagé";
+			break;
+		case 3:
+			temp = "Endommagé";
+			break;
+		case 4:
+			temp = "Touché";
+			break;
+		case 5:
+			temp = "Parfait état";
+			break;
+		}
 		return temp;
 	}
 
@@ -150,6 +203,14 @@ public abstract class Vehicule {
 
 	public String getNom() {
 		return nom;
+	}
+
+	public int getEtat() {
+		return etat;
+	}
+
+	public boolean isUnAmi(final Vehicule vehicule) {
+		return vehicule.getNationalite().equals(nationalite);
 	}
 
 }
