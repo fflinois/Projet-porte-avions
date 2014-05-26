@@ -17,10 +17,8 @@ public class Carte {
 	}
 
 	public void init(final int PosX, final int PosY, final Vehicule v) {
-
 		tableauCases[PosX][PosY].setType(3);
 		tableauCases[PosX][PosY].ajouterVehicule(v);
-
 	}
 	
 	public void selectionCase(final Vehicule v) {
@@ -55,6 +53,7 @@ public class Carte {
 		tableauCases[v.getPosX()][v.getPosY()].setType(typeOfNewCase);
 	}
 
+
 	public void deselectionCase(final Vehicule v) {
 		final int typeOfCase = tableauCases[v.getPosX()][v.getPosY()].getType();
 		int typeOfNewCase = 0;
@@ -86,6 +85,7 @@ public class Carte {
 		}
 		tableauCases[v.getPosX()][v.getPosY()].setType(typeOfNewCase);
 	}
+
 
 	public void miseAJour(final int newPosX, final int newPosY, final Vehicule v) {
 
@@ -213,7 +213,6 @@ public class Carte {
 
 	public void suppression(final int newPosX, final int newPosY,
 			final Vehicule v) {
-
 	}
 
 	public int getLargeur() {

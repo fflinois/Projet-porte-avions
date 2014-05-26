@@ -97,16 +97,25 @@ public class Partie {
 		final String[] textInfo = new String[2];
 		boolean isPlacable;
 
-		choix = saisieEntier(1, 10, "Nombre de porte-avions ?");
+		textInfo[0] = "Initialisation du jeu";
+		textInfo[1] = "Suivez les indications de la console\n";
+		igpa.setTextAAfficher(textInfo);
+		rafraichirIGPA();
+
+		choix = saisieEntier(1, 10,
+				"Bienvenue dans MIDWAY\nPret à jouer :-)\n\nAvec combien de porte-avions voulez vous jouer ?\n");
 
 		for (int i = 0; i < choix; i++) {
-			System.out.println("Nom du porte-avions" + (i + 1));
+			System.out.println("Tapez le nom du porte-avions n°" + (i + 1)
+					+ "\n");
 			nom = Terminal.readString();
-			System.out.println("Nationalité du porte-avions" + (i + 1));
+			System.out.println("Tapez la nationalité du porte-avions "
+					+ (i + 1) + "\n");
 			nationalite = Terminal.readString();
 			PorteAvions porteAvions;
 			do {
-				System.out.println("Position du porte-avions " + nom);
+				System.out.println("Placez le porte-avions " + nom
+								+ "\nen cliquant sur une des cases du plateau de jeu\n");
 				recuperationCoordSourisSurCarte(Coord.xCarteMin(nbrCase),
 						Coord.xCarteMax(nbrCase), Coord.yCarteMin(nbrCase),
 						Coord.yCarteMax(nbrCase));
@@ -115,6 +124,7 @@ public class Partie {
 				isPlacable = porteAvions.isPlacable(carte, positionXClic,
 						positionYClic);
 				if (!isPlacable) {
+					System.out.println("Cette position est impossible !!\n");
 					textInfo[0] = "Cet emplacement est impossible";
 					igpa.setTextAAfficher(textInfo);
 				}
@@ -133,9 +143,9 @@ public class Partie {
 				choix = saisieEntier(1, 2, tempText);
 
 				if (choix == 1) {
-					choix = saisieEntier(1, 10, "Combien d'avion?");
+					choix = saisieEntier(1, 10, "Combien d'avion?\n");
 					for (int i = 0; i < choix; i++) {
-						System.out.println("Nom de l'avions" + (i + 1));
+						System.out.println("Nom de l'avion " + (i + 1) + "\n");
 						nom = Terminal.readString();
 						final Avion chasseur = new Chasseur(v.getNationalite(),
 								nom,
@@ -150,6 +160,10 @@ public class Partie {
 		igpa.definirTerrain(carte.getTableauCasesInt());
 		igpa.creerFenetre();
 		igpa.reafficher();
+
+		System.out.println("Vous jouez maintenant en mode graphique");
+		System.out.println("Suivez les indications du panneau de commande");
+		System.out.println("Bon jeu :-)");
 	}
 
 	/*
@@ -166,10 +180,9 @@ public class Partie {
 	 */
 	public void jouer() {
 
-		boolean encore = true;
+		boolean continuerLeJeu = true;
 		int choix = 0;
 		int compteurJeu = 0;
-		int compteurTour = 1;
 
 		final String[] infoPourClic = { "Sélectionner une case",
 				"en cliquant sur", "celle-ci" };
@@ -180,7 +193,7 @@ public class Partie {
 		igpa.reafficher();
 		initialisation();
 
-		while (encore) {
+		while (continuerLeJeu) {
 
 			final Vehicule vehiculeJouant = listeVehiculesA.get(compteurJeu);
 
@@ -201,7 +214,7 @@ public class Partie {
 
 			if (choix == 0) {
 
-				encore = false;
+				continuerLeJeu = false;
 
 			} else {
 				recuperationCoordSourisSurCarte(Coord.xCarteMin(nbrCase),
@@ -237,8 +250,6 @@ public class Partie {
 			} else {
 				compteurJeu++;
 			}
-
-			compteurTour++;
 		}
 		igpa.fermer();
 	}

@@ -54,24 +54,23 @@ public abstract class Avion extends Vehicule{
 		boolean aAterri = false;
 		PorteAvions porteAvionsCase = null;
 		
-		if ((typeCase == 3 || typeCase == 6 || typeCase == 7)){
+		if (porteAvionsPresentsurCaseSelectionne(typeCase)) {
 			porteAvionsCase = carteJeu.getTableauCases()[newPosX][newPosY].getPorteAvions();
+
 		}
-		
 		if (isDeplacable(carteJeu, newPosX, newPosY)
 				&& placeDispoSurCase(carteJeu, newPosX, newPosY)
-				&& (typeCase == 1 || ((typeCase == 3 || typeCase == 6 || typeCase == 7)
-						&& porteAvionsCase.getNbrAvionsABord() < porteAvionsCase
-								.getCapaciteMax() && porteAvionsCase
-							.isUnAmi(this)))) {
-			position = 2;
-			carteJeu.miseAJour(newPosX, newPosY, this);
-			brulerCarburant(newPosX, newPosY);
-			posX = newPosX;
-			posY = newPosY;
-			aAterri = true;
-			porteAvionsCase.addAvion(this);
-		}
+				&& (caseIsSable(typeCase) || porteAvionsPresentsurCaseSelectionne(typeCase))
+				&& placeDispoSurPorteAvions(porteAvionsCase)
+				&& isUnAmi(porteAvionsCase)) {
+				position = 2;
+				carteJeu.miseAJour(newPosX, newPosY, this);
+				brulerCarburant(newPosX, newPosY);
+				posX = newPosX;
+				posY = newPosY;
+				aAterri = true;
+				porteAvionsCase.addAvion(this);
+			}
 
 			return aAterri;
 	}
@@ -79,6 +78,19 @@ public abstract class Avion extends Vehicule{
 	public boolean placeDispoSurCase(final Carte carteJeu, final int newPosX,
 			final int newPosY) {
 		return carteJeu.getTableauCases()[newPosX][newPosY].getNbrAvion() < 5;
+	}
+
+	public boolean porteAvionsPresentsurCaseSelectionne(final int typeCase) {
+		return typeCase == 3 || typeCase == 6 || typeCase == 7;
+	}
+
+	public boolean placeDispoSurPorteAvions(final PorteAvions porteAvionsCase) {
+		return porteAvionsCase.getNbrAvionsABord() < porteAvionsCase
+				.getCapaciteMax();
+	}
+
+	public boolean caseIsSable(final int typeCase) {
+		return typeCase == 1;
 	}
 
 }

@@ -57,11 +57,9 @@ class SpecialPanel extends JPanel{
 			g.drawString(textAAfficher[i] + "", jeu.length * 48 + 48,
 					30 + 20 * i);
 		}
-
 		g.drawString("Cliquez sur une icône :", jeu.length * 48 + 48,
 				20 * textAAfficher.length + 30);
     }
-
 }
 
 
