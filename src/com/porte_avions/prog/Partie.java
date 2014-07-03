@@ -2,11 +2,15 @@ package com.porte_avions.prog;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.porte_avions.view.IGPA;
 
-public class Partie {
+public class Partie implements Serializable {
+
+	private static final long serialVersionUID = 5623170988194876825L;
+	
 	protected ArrayList<Vehicule> listeVehiculesA;
 	protected ArrayList<Vehicule> listeVehiculesB;
 	protected Carte carte;
@@ -178,20 +182,26 @@ public class Partie {
 	 * 
 	 * Methode de jeu principale
 	 */
-	public void jouer() {
+	public void jouer(final boolean sauvegarde) {
 
 		boolean continuerLeJeu = true;
 		int choix = 0;
 		int compteurJeu = 0;
-
 		final String[] infoPourClic = { "Sélectionner une case",
 				"en cliquant sur", "celle-ci" };
-
-		igpa.definirTerrain(carte.getTableauCasesInt());
-		igpa.definirMenu(tabMenuInit);
-		igpa.creerFenetre();
-		igpa.reafficher();
-		initialisation();
+		if (!sauvegarde) {
+			igpa.definirTerrain(carte.getTableauCasesInt());
+			igpa.definirMenu(tabMenuInit);
+			igpa.creerFenetre();
+			igpa.reafficher();
+			initialisation();
+		} else {
+			initIGPA();
+			igpa.definirTerrain(carte.getTableauCasesInt());
+			igpa.definirMenu(tabMenuInit);
+			igpa.creerFenetre();
+			igpa.reafficher();
+		}
 
 		while (continuerLeJeu) {
 

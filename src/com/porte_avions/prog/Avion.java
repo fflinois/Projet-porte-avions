@@ -71,8 +71,7 @@ public abstract class Avion extends Vehicule{
 				aAterri = true;
 				porteAvionsCase.addAvion(this);
 			}
-
-			return aAterri;
+		return aAterri;
 	}
 	
 	public boolean placeDispoSurCase(final Carte carteJeu, final int newPosX,

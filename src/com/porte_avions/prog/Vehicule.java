@@ -1,6 +1,12 @@
 package com.porte_avions.prog;
 
-public abstract class Vehicule {
+import java.io.Serializable;
+
+public abstract class Vehicule implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4005336996134735948L;
 	protected String nationalite;
 	protected String nom;
 	protected int niveauCarburant;

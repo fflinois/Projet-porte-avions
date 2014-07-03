@@ -1,6 +1,12 @@
 package com.porte_avions.prog;
 
-public class Carte {
+import java.io.Serializable;
+
+public class Carte implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4474288173401677091L;
 	protected int largeur;
 	protected int hauteur;
 	protected Case[][] tableauCases;

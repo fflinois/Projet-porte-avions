@@ -1,8 +1,13 @@
 package com.porte_avions.prog;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Case {
+public class Case implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2168825840980178230L;
 	protected int type;
 	protected ArrayList<Vehicule> listeVehicule;
 

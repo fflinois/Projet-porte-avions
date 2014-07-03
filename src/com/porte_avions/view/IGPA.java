@@ -3,6 +3,7 @@ package com.porte_avions.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -11,10 +12,14 @@ import javax.swing.JPanel;
 
 import com.porte_avions.prog.Partie;
 
-class SpecialPanel extends JPanel{
+class SpecialPanel extends JPanel implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5085455434499920264L;
 	int[][] jeu;
 	int[] menu;
     Color blanc = Color.white;
